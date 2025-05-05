@@ -1,0 +1,20 @@
+spring:
+  web:
+    resources:
+      static-locations: classpath:/static/
+  datasource:
+    url: jdbc:postgresql://localhost:5433/rental_db
+    username: rental_user
+    password: rental_pass
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+
+server:
+  port: 8081
