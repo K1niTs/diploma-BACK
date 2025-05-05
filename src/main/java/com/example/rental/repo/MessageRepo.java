@@ -5,10 +5,13 @@ import com.example.rental.entity.Message;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
 @Repository
 public interface MessageRepo extends JpaRepository<Message, Long> {
+
+    /** История между двумя пользователями, от самого раннего к позднему. */
     @Query("""
       select m from Message m
        where (m.sender.id = :me   and m.recipient.id = :other)
@@ -16,4 +19,12 @@ public interface MessageRepo extends JpaRepository<Message, Long> {
        order by m.createdAt
     """)
     List<Message> findConversation(Long me, Long other);
+
+    /** Все сообщения, где участвует пользователь, от самых свежих. */
+    @Query("""
+      select m from Message m
+       where m.sender.id = :me or m.recipient.id = :me
+       order by m.createdAt desc
+    """)
+    List<Message> findAllForUser(Long me);
 }

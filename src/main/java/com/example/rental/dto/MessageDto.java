@@ -8,5 +8,6 @@ public record MessageDto(
         Long    fromId,
         Long    toId,
         String  text,
-        Instant createdAt
+        Instant createdAt,
+        String  fromEmail
 ) {}
