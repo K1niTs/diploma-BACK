@@ -5,16 +5,24 @@ import org.springframework.data.jpa.domain.Specification;
 
 public class InstrumentSpec {
 
-    public static Specification<Instrument> titleLike(String q){
-        return (root, query, cb) ->
-                q == null ? null :
-                        cb.like(cb.lower(root.get("title")), "%" + q.toLowerCase() + "%");
+    public static Specification<Instrument> titleLike(String query) {
+        return (root, cq, cb) -> {
+            if (query == null || query.isBlank()) {
+                return cb.conjunction();
+            }
+            String q = "%" + query.trim().toLowerCase() + "%";
+            return cb.like(cb.lower(root.get("title")), q);
+        };
     }
 
-    public static Specification<Instrument> hasCategory(String c){
-        return (root, query, cb) ->
-                c == null ? null :
-                        cb.equal(root.get("category"), c);
+    public static Specification<Instrument> hasCategory(String category) {
+        return (root, cq, cb) -> {
+            if (category == null || category.isBlank()) {
+                return cb.conjunction();
+            }
+            String c = "%" + category.trim().toLowerCase() + "%";
+            return cb.like(cb.lower(root.get("category")), c);
+        };
     }
 
     public static Specification<Instrument> priceBetween(Double min, Double max){
