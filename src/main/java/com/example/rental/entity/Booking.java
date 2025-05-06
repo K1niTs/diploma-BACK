@@ -1,4 +1,3 @@
-// Booking.java
 package com.example.rental.entity;
 
 import jakarta.persistence.*;
@@ -6,20 +5,38 @@ import lombok.*;
 
 import java.time.LocalDate;
 
-@Entity @Getter @Setter @NoArgsConstructor
+@Entity
 @Table(name = "bookings")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Booking {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false) private User  user;
-    @ManyToOne(optional = false) private Instrument instrument;
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "instrument_id", nullable = false)
+    private Instrument instrument;
+
+    @Column(nullable = false)
     private LocalDate startDate;
+
+    @Column(nullable = false)
     private LocalDate endDate;
-    private double   totalCost;
-    private String   status;   // NEW, PAID, CANCELLED
-    /** URL платёжной формы (заполняется при pay). Может быть null */
+
+    @Column(nullable = false)
+    private double totalCost;
+
+    @Column(nullable = false, length = 20)
+    private String status;
+
     @Column(name = "payment_url")
-    private String paymentUrl;                // ← ДОБАВЛЕНО
+    private String paymentUrl;
 }
