@@ -1,4 +1,3 @@
-// src/main/java/com/example/rental/repo/MessageRepo.java
 package com.example.rental.repo;
 
 import com.example.rental.entity.Message;
@@ -11,7 +10,6 @@ import java.util.List;
 @Repository
 public interface MessageRepo extends JpaRepository<Message, Long> {
 
-    /** История между двумя пользователями, от самого раннего к позднему. */
     @Query("""
       select m from Message m
        where (m.sender.id = :me   and m.recipient.id = :other)
@@ -20,7 +18,6 @@ public interface MessageRepo extends JpaRepository<Message, Long> {
     """)
     List<Message> findConversation(Long me, Long other);
 
-    /** Все сообщения, где участвует пользователь, от самых свежих. */
     @Query("""
       select m from Message m
        where m.sender.id = :me or m.recipient.id = :me

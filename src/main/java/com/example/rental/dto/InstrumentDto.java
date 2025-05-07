@@ -1,4 +1,3 @@
-// dto/InstrumentDto.java
 package com.example.rental.dto;
 
 public record InstrumentDto(Long id, Long ownerId,

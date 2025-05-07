@@ -1,4 +1,3 @@
-// AuthService.java
 package com.example.rental.service;
 
 import com.example.rental.dto.*;

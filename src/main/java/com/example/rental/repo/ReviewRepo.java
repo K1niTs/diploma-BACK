@@ -1,4 +1,3 @@
-// src/main/java/com/example/rental/repo/ReviewRepo.java
 package com.example.rental.repo;
 
 import com.example.rental.entity.Review;

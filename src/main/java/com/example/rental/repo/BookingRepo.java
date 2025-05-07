@@ -10,7 +10,6 @@ import java.util.List;
 
 @Repository
 public interface BookingRepo extends JpaRepository<Booking, Long> {
-    /** Есть ли хотя бы одна активная бронь, пересекающая запрошенный интервал? */
     @Query("""
         select count(b) 
         from   Booking b

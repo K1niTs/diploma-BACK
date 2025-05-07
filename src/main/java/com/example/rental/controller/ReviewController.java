@@ -1,4 +1,3 @@
-// src/main/java/com/example/rental/controller/ReviewController.java
 package com.example.rental.controller;
 
 import com.example.rental.dto.ReviewDto;
@@ -15,13 +14,11 @@ public class ReviewController {
     private final ReviewService svc;
     public ReviewController(ReviewService s){ svc = s; }
 
-    /* ---------- GET: список ---------- */
     @GetMapping
     public List<ReviewDto> list(@PathVariable Long instrId){
         return svc.listForInstrument(instrId);
     }
 
-    /* ---------- POST: добавить ---------- */
     @PostMapping
     public ReviewDto add(@PathVariable Long instrId,
                          @RequestBody ReviewDto body,

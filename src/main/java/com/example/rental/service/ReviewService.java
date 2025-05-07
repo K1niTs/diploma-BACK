@@ -1,4 +1,4 @@
-// src/main/java/com/example/rental/service/ReviewService.java
+
 package com.example.rental.service;
 
 import com.example.rental.dto.ReviewDto;
@@ -25,24 +25,20 @@ public class ReviewService {
         users       = u;
     }
 
-    /* ---------- список для инструмента ---------- */
     public List<ReviewDto> listForInstrument(Long instrId){
         return reviews.findByInstrument_Id(instrId)
                 .stream().map(this::map)
                 .toList();
     }
 
-    /* ---------- добавить ---------- */
     public ReviewDto add(Long instrId, Long uid, int rating, String comment){
 
         if(rating < 1 || rating > 5)
             throw new IllegalArgumentException("rating 1..5");
 
-        /* уже оставлял? */
         if(reviews.existsByUser_IdAndInstrument_Id(uid, instrId))
             throw new RuntimeException("Already reviewed");
 
-        /* есть оплаченная/ожидающая оплата бронь? */
         boolean ok = bookings.existsByUser_IdAndInstrument_IdAndStatusIn(
                 uid, instrId, List.of("WAITING_PAYMENT","PAID"));
         if(!ok) throw new RuntimeException("Need paid booking first");
@@ -58,7 +54,6 @@ public class ReviewService {
         return map(r);
     }
 
-    /* ---------- mapper ---------- */
     private ReviewDto map(Review r){
         return new ReviewDto(
                 r.getId(),

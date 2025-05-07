@@ -1,7 +1,6 @@
-// src/main/java/com/example/rental/config/PhotoStorageConfig.java
 package com.example.rental.config;
 
-import org.springframework.beans.factory.annotation.Value;   // ← правильный импорт
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,7 +10,7 @@ import java.nio.file.*;
 @Configuration
 public class PhotoStorageConfig {
 
-    @Value("${photo.dir:photos}")        // ok
+    @Value("${photo.dir:photos}")
     private String photoDir;
 
     @Bean

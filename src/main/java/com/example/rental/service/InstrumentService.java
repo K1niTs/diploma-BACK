@@ -1,4 +1,3 @@
-// src/main/java/com/example/rental/service/InstrumentService.java
 package com.example.rental.service;
 
 import com.example.rental.dto.InstrumentDto;
@@ -22,7 +21,6 @@ public class InstrumentService {
         this.users = users;
     }
 
-    /** Создание нового объявления */
     public InstrumentDto create(InstrumentDto dto) {
         Instrument inst = new Instrument();
         inst.setOwner(users.findById(dto.ownerId()).orElseThrow());
@@ -35,7 +33,6 @@ public class InstrumentService {
         return map(inst);
     }
 
-    /** Редактирование существующего объявления */
     public InstrumentDto update(Long id, InstrumentDto dto, Long uid) {
         Instrument inst = repo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Instrument not found"));
@@ -46,12 +43,10 @@ public class InstrumentService {
         inst.setDescription(dto.description());
         inst.setPricePerDay(dto.pricePerDay());
         inst.setCategory(dto.category());
-        // не трогаем ownerId и imageUrl (если нужен другой — загружает PhotoController)
         repo.save(inst);
         return map(inst);
     }
 
-    /** Удаление объявления */
     public void delete(Long id, Long uid) {
         Instrument inst = repo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Instrument not found"));
@@ -61,7 +56,6 @@ public class InstrumentService {
         repo.delete(inst);
     }
 
-    /** Поиск + фильтры + пагинация */
     public Page<InstrumentDto> search(String q,
                                       String category,
                                       Double minPrice,
@@ -75,7 +69,6 @@ public class InstrumentService {
                 .map(this::map);
     }
 
-    /** Маппинг из Entity в DTO */
     private InstrumentDto map(Instrument i) {
         return new InstrumentDto(
                 i.getId(),

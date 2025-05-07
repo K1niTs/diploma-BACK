@@ -1,4 +1,3 @@
-// src/main/java/com/example/rental/dto/MessageDto.java
 package com.example.rental.dto;
 
 import java.time.Instant;

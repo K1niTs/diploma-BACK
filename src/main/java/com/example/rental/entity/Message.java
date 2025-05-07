@@ -1,4 +1,3 @@
-// src/main/java/com/example/rental/entity/Message.java
 package com.example.rental.entity;
 
 import jakarta.persistence.*;
@@ -22,7 +21,6 @@ public class Message {
     @Column(nullable = false)
     private Instant createdAt = Instant.now();
 
-    // getters + setters
     public Long getId() { return id; }
     public User getSender() { return sender; }
     public void setSender(User sender) { this.sender = sender; }
