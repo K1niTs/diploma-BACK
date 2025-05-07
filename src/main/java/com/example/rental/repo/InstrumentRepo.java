@@ -9,5 +9,4 @@ import org.springframework.stereotype.Repository;
 public interface InstrumentRepo
         extends JpaRepository<Instrument, Long>,
         JpaSpecificationExecutor<Instrument> {
-    // при желании: List<Instrument> findByCategory(String category);
 }

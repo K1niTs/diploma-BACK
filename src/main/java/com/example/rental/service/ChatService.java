@@ -1,4 +1,3 @@
-// src/main/java/com/example/rental/service/ChatService.java
 package com.example.rental.service;
 
 import com.example.rental.dto.ChatRoomDto;
@@ -21,7 +20,6 @@ public class ChatService {
         this.users = users;
     }
 
-    /** Отправить новое сообщение. */
     public MessageDto send(MessageDto dto, Long me) {
         if (!me.equals(dto.fromId()))
             throw new AccessDeniedException("Not yourself");
@@ -42,7 +40,6 @@ public class ChatService {
         );
     }
 
-    /** Вся переписка с конкретным другим пользователем. */
     public List<MessageDto> history(Long me, Long other) {
         return repo.findConversation(me, other).stream()
                 .map(m -> new MessageDto(

@@ -1,4 +1,3 @@
-// Payment.java  — заглушка
 package com.example.rental.entity;
 
 import jakarta.persistence.*;
@@ -15,7 +14,7 @@ public class Payment {
     @OneToOne(optional = false) private Booking booking;
 
     private double amount;
-    private String paymentMethod;   // FAKE
-    private String paymentStatus;   // SUCCESS
+    private String paymentMethod;
+    private String paymentStatus;
     private Instant createdAt = Instant.now();
 }

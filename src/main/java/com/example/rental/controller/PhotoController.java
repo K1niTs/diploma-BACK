@@ -1,4 +1,3 @@
-// src/main/java/com/example/rental/controller/PhotoController.java
 package com.example.rental.controller;
 
 import com.example.rental.dto.InstrumentDto;
@@ -16,20 +15,14 @@ import java.io.InputStream;
 import java.nio.file.*;
 import java.util.UUID;
 
-/**
- * Загрузка / замена фотографии инструмента.
- * После успешного аплоада возвращает обновлённый InstrumentDto
- * с ПОЛНЫМ URL до изображения (например http://192.168.0.41:8081/photos/abc.jpg),
- * чтобы мобильный клиент смог сразу отобразить картинку.
- */
+
 @RestController
 @RequestMapping("/instruments")
 public class PhotoController {
 
     private final InstrumentRepo repo;
-    private final Path           photoRoot;     // …/static/photos
+    private final Path           photoRoot;
 
-    /** если приложение развернуто не в корне («/api» и т.д.) */
     @Value("${server.servlet.context-path:}")
     private String ctxPath;
 
@@ -38,7 +31,6 @@ public class PhotoController {
         this.photoRoot = photoRoot;
     }
 
-    /* ------------------------------------------------------------------ */
 
     @PostMapping("/{id}/photo")
     public InstrumentDto upload(@PathVariable Long id,
@@ -48,30 +40,24 @@ public class PhotoController {
         Instrument inst = repo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Instrument not found"));
 
-        /* ---------- 1. Генерируем уникальное имя файла ---------- */
         String ext  = FilenameUtils.getExtension(file.getOriginalFilename());
         String name = UUID.randomUUID() + (ext.isBlank() ? ".jpg" : "." + ext);
 
-        Path dst = photoRoot.resolve(name);          // …/static/photos/<name>
+        Path dst = photoRoot.resolve(name);
 
-        /* ---------- 2. Сохраняем файл на диск ---------- */
         try (InputStream in = file.getInputStream()) {
             Files.copy(in, dst, StandardCopyOption.REPLACE_EXISTING);
         }
 
-        /* ---------- 3. Формируем ПОЛНЫЙ URL ---------- */
-        String base = req.getScheme() + "://" +          // http://
-                req.getServerName() +              // 192.168.0.41
-                ":" + req.getServerPort();         // :8081
+        String base = req.getScheme() + "://" +
+                req.getServerName() +
+                ":" + req.getServerPort();
 
-        // учитываем, что приложение может жить, например, под "/api"
-        String url = base + ctxPath + "/photos/" + name; // http://…/photos/xxx.jpg
+        String url = base + ctxPath + "/photos/" + name;
 
-        /* ---------- 4. Сохраняем URL в сущности ---------- */
         inst.setImageUrl(url);
         repo.save(inst);
 
-        /* ---------- 5. Возвращаем обновлённый DTO ---------- */
         return new InstrumentDto(
                 inst.getId(),
                 inst.getOwner().getId(),
@@ -79,7 +65,7 @@ public class PhotoController {
                 inst.getDescription(),
                 inst.getPricePerDay(),
                 inst.getCategory(),
-                inst.getImageUrl()          // уже полный URL
+                inst.getImageUrl()
         );
     }
 }

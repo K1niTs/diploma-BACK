@@ -23,7 +23,6 @@ public class BookingService {
         users       = u;
     }
 
-    /* ------------ СОЗДАНИЕ (NEW) ------------ */
     public BookingDto create(BookingDto dto) {
 
         Instrument instr = instruments.findById(dto.instrumentId()).orElseThrow();
@@ -46,13 +45,11 @@ public class BookingService {
         b.setEndDate(dto.endDate());
         b.setTotalCost(cost);
         b.setStatus("NEW");
-        // paymentUrl остаётся null
         repo.save(b);
 
         return map(b);
     }
 
-    /* ------------ ОПЛАТА (PAY) --------------- */
     public BookingDto pay(Long id, Long uid) {
 
         Booking b = repo.findById(id).orElseThrow();
@@ -63,8 +60,6 @@ public class BookingService {
         if (!"NEW".equals(b.getStatus()))
             throw new RuntimeException("already paid / cancelled");
 
-        /* здесь можно вызвать настоящий PSP;
-           пока – фиктивная ссылка */
         String url = "https://pay.demo/mock?order=" + b.getId();
 
         b.setPaymentUrl(url);
@@ -74,7 +69,6 @@ public class BookingService {
         return map(b);
     }
 
-    /* ------------ ЗАКРЫТЬ (CANCEL) ----------- */
     public BookingDto cancel(Long id, Long uid){
         Booking b = repo.findById(id).orElseThrow();
         if (!b.getUser().getId().equals(uid))
@@ -84,11 +78,9 @@ public class BookingService {
         return map(b);
     }
 
-    /* ------------ READ helpers --------------- */
     public List<BookingDto> all()             { return repo.findAll()          .stream().map(this::map).toList(); }
     public List<BookingDto> listByUser(Long u){ return repo.findByUserId(u)    .stream().map(this::map).toList(); }
 
-    /* ------------ MAP ------------------------ */
     private BookingDto map(Booking b){
         return new BookingDto(
                 b.getId(),
@@ -99,7 +91,7 @@ public class BookingService {
                 b.getEndDate(),
                 b.getTotalCost(),
                 b.getStatus(),
-                b.getPaymentUrl()        // ← вернётся null или ссылка
+                b.getPaymentUrl()
         );
     }
 }

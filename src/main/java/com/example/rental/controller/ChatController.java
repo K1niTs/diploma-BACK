@@ -1,4 +1,3 @@
-// src/main/java/com/example/rental/controller/ChatController.java
 package com.example.rental.controller;
 
 import com.example.rental.dto.ChatRoomDto;
@@ -18,14 +17,12 @@ public class ChatController {
         this.svc = svc;
     }
 
-    /** GET /chat/rooms — список всех комнат (диалогов) */
     @GetMapping("/rooms")
     public List<ChatRoomDto> rooms(HttpServletRequest req) {
         Long me = (Long) req.getAttribute("uid");
         return svc.listChats(me);
     }
 
-    /** GET /chat/{otherId} — история конкретного диалога */
     @GetMapping("/{otherId}")
     public List<MessageDto> history(
             @PathVariable Long otherId,
@@ -35,7 +32,6 @@ public class ChatController {
         return svc.history(me, otherId);
     }
 
-    /** POST /chat/send — отправить сообщение */
     @PostMapping("/send")
     public MessageDto send(
             @RequestBody MessageDto dto,

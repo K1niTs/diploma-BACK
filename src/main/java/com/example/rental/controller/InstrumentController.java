@@ -1,4 +1,3 @@
-// src/main/java/com/example/rental/controller/InstrumentController.java
 package com.example.rental.controller;
 
 import com.example.rental.dto.InstrumentDto;
@@ -21,7 +20,6 @@ public class InstrumentController {
         this.service = service;
     }
 
-    /* ---------- GET с фильтрами ---------- */
     @GetMapping
     public Page<InstrumentDto> list(
             @RequestParam(required = false) String q,
@@ -32,7 +30,6 @@ public class InstrumentController {
         return service.search(q, category, minPrice, maxPrice, pageable);
     }
 
-    /* ---------- POST создание ---------- */
     @PostMapping
     public InstrumentDto create(@RequestBody InstrumentDto dto,
                                 HttpServletRequest req) {
@@ -51,7 +48,6 @@ public class InstrumentController {
         ));
     }
 
-    /* ---------- PUT редактирование ---------- */
     @PutMapping("/{id}")
     public InstrumentDto update(@PathVariable Long id,
                                 @RequestBody InstrumentDto dto,
@@ -60,7 +56,6 @@ public class InstrumentController {
         if (uid == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Auth required");
         }
-        // Собираем DTO с правильным ownerId и id
         InstrumentDto toUpdate = new InstrumentDto(
                 id,
                 uid,
@@ -73,7 +68,6 @@ public class InstrumentController {
         return service.update(id, toUpdate, uid);
     }
 
-    /* ---------- DELETE удаление ---------- */
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id,
